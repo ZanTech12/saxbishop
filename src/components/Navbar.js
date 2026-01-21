@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import './Navbar.css'; // Import the CSS file
 
 function Navbar({ activeSection, scrollToSection, isDarkMode, setIsDarkMode }) {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -14,7 +15,7 @@ function Navbar({ activeSection, scrollToSection, isDarkMode, setIsDarkMode }) {
 
     const handleNavClick = (sectionId) => {
         scrollToSection(sectionId);
-        setIsMenuOpen(false);
+        setIsMenuOpen(false); // Close menu on mobile after click
     };
 
     return (
@@ -24,10 +25,16 @@ function Navbar({ activeSection, scrollToSection, isDarkMode, setIsDarkMode }) {
                     <span className="logo-text">Saxbishop</span>
                 </div>
 
-                <div className="nav-menu-toggle" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+                {/* Hamburger Menu Toggle for Mobile */}
+                <div
+                    className="nav-menu-toggle"
+                    onClick={() => setIsMenuOpen(!isMenuOpen)}
+                    aria-label="Toggle navigation menu"
+                >
                     <span className={`hamburger ${isMenuOpen ? 'active' : ''}`}></span>
                 </div>
 
+                {/* Navigation Menu */}
                 <ul className={`nav-menu ${isMenuOpen ? 'active' : ''}`}>
                     {navItems.map(item => (
                         <li key={item.id}>
@@ -48,6 +55,7 @@ function Navbar({ activeSection, scrollToSection, isDarkMode, setIsDarkMode }) {
                         <button
                             className="theme-toggle"
                             onClick={() => setIsDarkMode(!isDarkMode)}
+                            aria-label="Toggle dark mode"
                         >
                             {isDarkMode ? '☀️' : '🌙'}
                         </button>
