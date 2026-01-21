@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Container, Row, Col, Card, Button, Alert } from 'react-bootstrap';
+import React, { useState, useEffect, useCallback } from 'react';
+import { Container, Row, Col, Button, Alert } from 'react-bootstrap';
 
 function About({ isDarkMode }) {
     const [downloadError, setDownloadError] = useState(false);
@@ -72,12 +72,8 @@ function About({ isDarkMode }) {
     const RESUME_URL = process.env.PUBLIC_URL + '/resume.pdf';
     const RESUME_FILENAME = 'Michael_Ola_Sunkanmi_Resume.pdf';
 
-    // Check if file exists on component mount
-    useEffect(() => {
-        checkFileExists();
-    }, []);
-
-    const checkFileExists = async () => {
+    // Check if file exists - memoized with useCallback to fix ESLint warning
+    const checkFileExists = useCallback(async () => {
         try {
             const response = await fetch(RESUME_URL, { method: 'HEAD' });
             setFileExists(response.ok);
@@ -88,7 +84,12 @@ function About({ isDarkMode }) {
             setFileExists(false);
             console.log('Error checking file existence:', error);
         }
-    };
+    }, [RESUME_URL]);
+
+    // Check if file exists on component mount
+    useEffect(() => {
+        checkFileExists();
+    }, [checkFileExists]);
 
     // Method 1: Direct download using anchor tag
     const handleDirectDownload = (e) => {
