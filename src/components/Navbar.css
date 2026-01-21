@@ -57,8 +57,12 @@ body.dark-mode .nav-logo .logo-text {
 .nav-menu-toggle {
     display: block;
     /* Visible on mobile */
+    background: none;
+    border: none;
     cursor: pointer;
-    z-index: 1001;
+    padding: 0.5rem;
+    z-index: 1002;
+    /* Above the menu */
 }
 
 .hamburger {
@@ -154,16 +158,12 @@ body.dark-mode .nav-menu {
     font-weight: 500;
     display: flex;
     flex-direction: column;
-    /* Stack icon and label vertically on mobile */
     align-items: center;
     justify-content: center;
-    /* Center items vertically */
     gap: 0.5rem;
-    /* Increased gap for clarity */
     padding: 1rem;
     width: 100%;
     min-height: 80px;
-    /* Ensure each link has enough height */
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
@@ -186,24 +186,17 @@ body.dark-mode .nav-link.active {
 .nav-icon {
     font-size: 1.5rem;
     display: block;
-    /* Ensure icon is a block element */
 }
 
-/* --- KEY FIX: Force labels to be visible on mobile --- */
+/* --- Force labels to be visible on mobile --- */
 .nav-label {
     font-size: 1rem;
-    /* Increased font size */
     font-weight: 400;
     display: block !important;
-    /* Force display to block */
     opacity: 1 !important;
-    /* Force full opacity */
     visibility: visible !important;
-    /* Force visibility */
     color: inherit;
-    /* Inherit color from parent */
     line-height: 1.2;
-    /* Ensure proper line height */
 }
 
 .theme-toggle {
@@ -268,7 +261,6 @@ body.dark-mode .theme-toggle:hover {
         padding: 0.5rem 1rem;
         border-radius: 5px;
         min-height: auto;
-        /* Reset min-height for desktop */
         transition: color 0.3s ease, background-color 0.3s ease;
     }
 
@@ -292,12 +284,9 @@ body.dark-mode .theme-toggle:hover {
         font-size: 1.2rem;
     }
 
-    /* Reset label styles for desktop, removing !important is okay here */
     .nav-label {
         font-size: 1rem;
         display: inline;
-        opacity: 1;
-        visibility: visible;
     }
 
     .theme-toggle {

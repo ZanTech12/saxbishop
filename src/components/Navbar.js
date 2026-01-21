@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import './Navbar.css'; // Import the CSS file
 
 function Navbar({ activeSection, scrollToSection, isDarkMode, setIsDarkMode }) {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const navMenuRef = useRef(null); // Ref for the navigation menu
 
     const navItems = [
         { id: 'home', label: 'Home', icon: '🏠' },
@@ -13,10 +14,58 @@ function Navbar({ activeSection, scrollToSection, isDarkMode, setIsDarkMode }) {
         { id: 'contacts', label: 'Contact', icon: '📧' }
     ];
 
-    const handleNavClick = (sectionId) => {
+    // Toggle menu open/close
+    const toggleMenu = useCallback(() => {
+        setIsMenuOpen(prev => !prev);
+    }, []);
+
+    // Handle navigation link click
+    const handleNavClick = useCallback((sectionId) => {
         scrollToSection(sectionId);
         setIsMenuOpen(false); // Close menu on mobile after click
-    };
+    }, [scrollToSection]);
+
+    // Close menu when clicking outside
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (navMenuRef.current && !navMenuRef.current.contains(event.target) && isMenuOpen) {
+                setIsMenuOpen(false);
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [isMenuOpen]);
+
+    // Close menu with 'Escape' key
+    useEffect(() => {
+        const handleKeyDown = (event) => {
+            if (event.key === 'Escape' && isMenuOpen) {
+                setIsMenuOpen(false);
+            }
+        };
+
+        document.addEventListener('keydown', handleKeyDown);
+        return () => {
+            document.removeEventListener('keydown', handleKeyDown);
+        };
+    }, [isMenuOpen]);
+
+    // Prevent body scroll when menu is open
+    useEffect(() => {
+        if (isMenuOpen) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = 'unset';
+        }
+
+        // Cleanup function to reset overflow on unmount
+        return () => {
+            document.body.style.overflow = 'unset';
+        };
+    }, [isMenuOpen]);
 
     return (
         <nav className="navbar">
@@ -26,16 +75,21 @@ function Navbar({ activeSection, scrollToSection, isDarkMode, setIsDarkMode }) {
                 </div>
 
                 {/* Hamburger Menu Toggle for Mobile */}
-                <div
+                <button
                     className="nav-menu-toggle"
-                    onClick={() => setIsMenuOpen(!isMenuOpen)}
-                    aria-label="Toggle navigation menu"
+                    onClick={toggleMenu}
+                    aria-label={isMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
+                    aria-expanded={isMenuOpen}
                 >
                     <span className={`hamburger ${isMenuOpen ? 'active' : ''}`}></span>
-                </div>
+                </button>
 
                 {/* Navigation Menu */}
-                <ul className={`nav-menu ${isMenuOpen ? 'active' : ''}`}>
+                <ul
+                    ref={navMenuRef}
+                    className={`nav-menu ${isMenuOpen ? 'active' : ''}`}
+                    role="navigation"
+                >
                     {navItems.map(item => (
                         <li key={item.id}>
                             <a
@@ -45,8 +99,9 @@ function Navbar({ activeSection, scrollToSection, isDarkMode, setIsDarkMode }) {
                                     e.preventDefault();
                                     handleNavClick(item.id);
                                 }}
+                                aria-label={`Navigate to ${item.label} section`}
                             >
-                                <span className="nav-icon">{item.icon}</span>
+                                <span className="nav-icon" aria-hidden="true">{item.icon}</span>
                                 <span className="nav-label">{item.label}</span>
                             </a>
                         </li>
@@ -55,7 +110,7 @@ function Navbar({ activeSection, scrollToSection, isDarkMode, setIsDarkMode }) {
                         <button
                             className="theme-toggle"
                             onClick={() => setIsDarkMode(!isDarkMode)}
-                            aria-label="Toggle dark mode"
+                            aria-label={`Switch to ${isDarkMode ? 'light' : 'dark'} mode`}
                         >
                             {isDarkMode ? '☀️' : '🌙'}
                         </button>
