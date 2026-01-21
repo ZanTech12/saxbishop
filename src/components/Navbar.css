@@ -1,5 +1,6 @@
 /* src/components/Navbar.css */
 
+/* --- CSS Variables for Theming --- */
 :root {
     --nav-bg-color-light: #ffffff;
     --nav-text-color-light: #333333;
@@ -14,6 +15,7 @@
     --nav-border-color-dark: #333333;
 }
 
+/* --- Main Navbar Container --- */
 .navbar {
     position: fixed;
     top: 0;
@@ -27,6 +29,7 @@
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+/* Dark Mode Styles for Navbar */
 body.dark-mode .navbar {
     background-color: var(--nav-bg-color-dark);
     color: var(--nav-text-color-dark);
@@ -51,12 +54,13 @@ body.dark-mode .nav-logo .logo-text {
     color: var(--nav-accent-color-dark);
 }
 
-/* --- Hamburger Menu --- */
+/* --- Hamburger Menu (Mobile Only) --- */
 .nav-menu-toggle {
     display: block;
+    /* Visible on mobile */
     cursor: pointer;
     z-index: 1001;
-    /* Ensure it's above the menu */
+    /* Ensure it's clickable above other elements */
 }
 
 .hamburger {
@@ -97,46 +101,52 @@ body.dark-mode .hamburger::after {
 
 .hamburger.active {
     background-color: transparent;
+    /* Middle line disappears */
 }
 
 .hamburger.active::before {
     transform: rotate(45deg);
+    /* Top line becomes part of 'X' */
 }
 
 .hamburger.active::after {
     transform: rotate(-45deg);
+    /* Bottom line becomes part of 'X' */
 }
 
-/* --- Mobile Menu (Slide-Down Panel) --- */
+/* --- Mobile Navigation Menu (Slide-Down Panel) --- */
 .nav-menu {
     position: absolute;
     top: 100%;
-    /* Position it right below the navbar */
+    /* Positions the menu right below the navbar */
     left: 0;
     width: 100%;
     background-color: var(--nav-bg-color-light);
     border-top: 1px solid var(--nav-border-color-light);
     list-style: none;
-    padding: 1rem 0;
+    padding: 0;
     margin: 0;
+
+    /* Hide the menu by default */
     max-height: 0;
-    /* Start hidden */
     overflow: hidden;
-    transition: max-height 0.4s ease-in-out, padding 0.4s ease-in-out;
+    transition: max-height 0.4s ease-in-out;
+
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
+/* Dark mode for mobile menu */
 body.dark-mode .nav-menu {
     background-color: var(--nav-bg-color-dark);
     border-top-color: var(--nav-border-color-dark);
 }
 
+/* Show the menu when the 'active' class is present */
 .nav-menu.active {
     max-height: 500px;
-    /* A value large enough to fit all items */
-    padding: 1rem 0;
+    /* A value large enough to contain all menu items */
 }
 
 .nav-menu li {
@@ -151,9 +161,10 @@ body.dark-mode .nav-menu {
     font-weight: 500;
     display: flex;
     flex-direction: column;
+    /* Stack icon and label vertically on mobile */
     align-items: center;
     gap: 0.25rem;
-    padding: 0.75rem 1rem;
+    padding: 1rem;
     width: 100%;
     transition: background-color 0.3s ease, color 0.3s ease;
 }
@@ -178,7 +189,7 @@ body.dark-mode .nav-link.active {
     font-size: 1.5rem;
 }
 
-/* Explicitly style the label to ensure it's visible */
+/* Explicitly ensure labels are visible on mobile */
 .nav-label {
     font-size: 0.9rem;
     opacity: 1;
@@ -189,11 +200,12 @@ body.dark-mode .nav-link.active {
     background: none;
     border: 1px solid var(--nav-text-color-light);
     color: var(--nav-text-color-light);
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     cursor: pointer;
     padding: 0.5rem 1rem;
     border-radius: 5px;
-    margin-top: 0.5rem;
+    margin: 0.5rem 1rem 1rem;
+    /* Add some spacing */
     transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
 
@@ -217,38 +229,40 @@ body.dark-mode .theme-toggle:hover {
         padding: 1rem 2rem;
     }
 
+    /* Hide the hamburger menu on desktop */
     .nav-menu-toggle {
         display: none;
     }
 
+    /* Transform the mobile menu into a desktop horizontal bar */
     .nav-menu {
         position: static;
+        /* Reset positioning */
         width: auto;
         background-color: transparent;
         border-top: none;
         max-height: none;
+        /* Always visible */
         overflow: visible;
         padding: 0;
         flex-direction: row;
+        /* Align items horizontally */
         justify-content: flex-end;
         align-items: center;
         transition: none;
-    }
-
-    .nav-menu.active {
-        max-height: none;
-        /* Override mobile active state */
-        padding: 0;
+        /* No transition needed */
     }
 
     .nav-menu li {
         width: auto;
+        /* Let items size naturally */
     }
 
     .nav-link {
         color: var(--nav-text-color-light);
         font-size: 1rem;
         flex-direction: row;
+        /* Align icon and label horizontally */
         gap: 0.5rem;
         padding: 0.5rem 1rem;
         border-radius: 5px;
@@ -277,12 +291,13 @@ body.dark-mode .theme-toggle:hover {
 
     .nav-label {
         font-size: 1rem;
-        /* Reset label size for desktop */
+        /* Keep label size consistent on desktop */
     }
 
+    /* Adjust theme toggle for desktop */
     .theme-toggle {
-        margin-top: 0;
-        /* Remove top margin on desktop */
-        border-radius: 5px;
+        margin: 0;
+        /* Remove extra margin */
+        padding: 0.25rem 0.75rem;
     }
 }
