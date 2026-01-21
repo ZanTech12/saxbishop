@@ -29,7 +29,6 @@
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* Dark Mode Styles for Navbar */
 body.dark-mode .navbar {
     background-color: var(--nav-bg-color-dark);
     color: var(--nav-text-color-dark);
@@ -60,7 +59,6 @@ body.dark-mode .nav-logo .logo-text {
     /* Visible on mobile */
     cursor: pointer;
     z-index: 1001;
-    /* Ensure it's clickable above other elements */
 }
 
 .hamburger {
@@ -101,24 +99,20 @@ body.dark-mode .hamburger::after {
 
 .hamburger.active {
     background-color: transparent;
-    /* Middle line disappears */
 }
 
 .hamburger.active::before {
     transform: rotate(45deg);
-    /* Top line becomes part of 'X' */
 }
 
 .hamburger.active::after {
     transform: rotate(-45deg);
-    /* Bottom line becomes part of 'X' */
 }
 
 /* --- Mobile Navigation Menu (Slide-Down Panel) --- */
 .nav-menu {
     position: absolute;
     top: 100%;
-    /* Positions the menu right below the navbar */
     left: 0;
     width: 100%;
     background-color: var(--nav-bg-color-light);
@@ -137,7 +131,6 @@ body.dark-mode .hamburger::after {
     align-items: center;
 }
 
-/* Dark mode for mobile menu */
 body.dark-mode .nav-menu {
     background-color: var(--nav-bg-color-dark);
     border-top-color: var(--nav-border-color-dark);
@@ -145,8 +138,8 @@ body.dark-mode .nav-menu {
 
 /* Show the menu when the 'active' class is present */
 .nav-menu.active {
-    max-height: 500px;
-    /* A value large enough to contain all menu items */
+    /* Use 80vh to ensure it's tall enough for any screen */
+    max-height: 80vh;
 }
 
 .nav-menu li {
@@ -163,9 +156,14 @@ body.dark-mode .nav-menu {
     flex-direction: column;
     /* Stack icon and label vertically on mobile */
     align-items: center;
-    gap: 0.25rem;
+    justify-content: center;
+    /* Center items vertically */
+    gap: 0.5rem;
+    /* Increased gap for clarity */
     padding: 1rem;
     width: 100%;
+    min-height: 80px;
+    /* Ensure each link has enough height */
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
@@ -187,13 +185,25 @@ body.dark-mode .nav-link.active {
 
 .nav-icon {
     font-size: 1.5rem;
+    display: block;
+    /* Ensure icon is a block element */
 }
 
-/* Explicitly ensure labels are visible on mobile */
+/* --- KEY FIX: Force labels to be visible on mobile --- */
 .nav-label {
-    font-size: 0.9rem;
-    opacity: 1;
-    visibility: visible;
+    font-size: 1rem;
+    /* Increased font size */
+    font-weight: 400;
+    display: block !important;
+    /* Force display to block */
+    opacity: 1 !important;
+    /* Force full opacity */
+    visibility: visible !important;
+    /* Force visibility */
+    color: inherit;
+    /* Inherit color from parent */
+    line-height: 1.2;
+    /* Ensure proper line height */
 }
 
 .theme-toggle {
@@ -205,7 +215,6 @@ body.dark-mode .nav-link.active {
     padding: 0.5rem 1rem;
     border-radius: 5px;
     margin: 0.5rem 1rem 1rem;
-    /* Add some spacing */
     transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
 
@@ -229,43 +238,37 @@ body.dark-mode .theme-toggle:hover {
         padding: 1rem 2rem;
     }
 
-    /* Hide the hamburger menu on desktop */
     .nav-menu-toggle {
         display: none;
     }
 
-    /* Transform the mobile menu into a desktop horizontal bar */
     .nav-menu {
         position: static;
-        /* Reset positioning */
         width: auto;
         background-color: transparent;
         border-top: none;
         max-height: none;
-        /* Always visible */
         overflow: visible;
         padding: 0;
         flex-direction: row;
-        /* Align items horizontally */
         justify-content: flex-end;
         align-items: center;
         transition: none;
-        /* No transition needed */
     }
 
     .nav-menu li {
         width: auto;
-        /* Let items size naturally */
     }
 
     .nav-link {
         color: var(--nav-text-color-light);
         font-size: 1rem;
         flex-direction: row;
-        /* Align icon and label horizontally */
         gap: 0.5rem;
         padding: 0.5rem 1rem;
         border-radius: 5px;
+        min-height: auto;
+        /* Reset min-height for desktop */
         transition: color 0.3s ease, background-color 0.3s ease;
     }
 
@@ -289,15 +292,16 @@ body.dark-mode .theme-toggle:hover {
         font-size: 1.2rem;
     }
 
+    /* Reset label styles for desktop, removing !important is okay here */
     .nav-label {
         font-size: 1rem;
-        /* Keep label size consistent on desktop */
+        display: inline;
+        opacity: 1;
+        visibility: visible;
     }
 
-    /* Adjust theme toggle for desktop */
     .theme-toggle {
         margin: 0;
-        /* Remove extra margin */
         padding: 0.25rem 0.75rem;
     }
 }
